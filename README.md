@@ -1,70 +1,96 @@
-# 📝 Task Dashboard
+# Task Dashboard
 
-Aplicación fullstack de gestión de tareas con autenticación JWT, Node.js, MongoDB y React.
-
-## 🚀 Características
-
-✅ Registro y login de usuario con reCAPTCHA  
-✅ Creación, edición y eliminación de tareas  
-✅ Tareas privadas por usuario  
-✅ Panel Kanban básico  
-✅ Backend REST API con Express  
-✅ Frontend en React + Redux Toolkit  
-✅ Base de datos MongoDB  
-✅ Pruebas con Jest y Supertest
+Panel de tareas estilo Kanban con autenticación de usuarios.
 
 ---
 
-## ⚙️ Tecnologías
+## 🚀 Características principales
 
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- React
-- Redux Toolkit
-- Tailwind CSS (opcional)
-- Jest / Supertest
+- Registro y login con Google reCAPTCHA v2
+- Sesiones seguras con JWT
+- Cada usuario gestiona sus propias tareas
+- Crear, editar, cambiar estado y eliminar tareas
+- Estado persistente por sesión
+- Pruebas unitarias básicas con Jest y Supertest
 
 ---
 
-## 🛠 Instalación y ejecución local
+## 🖼 Capturas de pantalla
 
-### 1️⃣ Clonar el repositorio
+Próximamente
 
-git clone https://github.com/TU_USUARIO/TU_REPO.git
-cd task-dashboard
-2️⃣ Backend
-cd backend
-npm install
-Crear archivo .env con:
+---
 
-MONGO_URI=tu_url_de_mongodb
-JWT_SECRET=tu_secreto
-RECAPTCHA_SECRET_KEY=tu_clave_recaptcha
-Ejecutar en desarrollo:
+## ⚙️ Tecnologías utilizadas
 
-npm run dev
-3️⃣ Frontend
-En otra terminal:
+- Frontend: React, Redux Toolkit, TypeScript, Tailwind CSS
+- Backend: Node.js, Express, MongoDB + Mongoose
+- Autenticación: JWT
+- Seguridad: Google reCAPTCHA v2
+- Testing: Jest y Supertest
 
-cd frontend
-npm install
-npm run dev
-✅ Scripts disponibles
-npm run dev: modo desarrollo
+---
 
-npm test: correr tests
+## 📦 Instalación local
 
-🧪 Pruebas
-Para correr pruebas backend:
+1. Clonar el repositorio:
+   git clone https://github.com/josebuenomultimedia/task-dashboard.git
 
-NODE_ENV=test npm test
-🌐 Despliegue
-El frontend se puede desplegar en Vercel y el backend en Railway o Render.
+2. Backend:
+   cd backend
+   npm install
 
-✨ Autor
-👤 José Alejandro Bueno Salazar
+3. Frontend:
+   cd ../frontend
+   npm install
 
-📸 Capturas
-(Agrega aquí capturas de pantalla de tu app)
+4. Configurar variables de entorno en `backend/.env`:
+   MONGODB_URI=tu_mongodb_uri
+   JWT_SECRET=tu_secreto_jwt
+   RECAPTCHA_SECRET_KEY=tu_clave_secreta_recaptcha
+
+5. Iniciar backend:
+   npm run dev
+
+6. Iniciar frontend:
+   npm run dev
+
+---
+
+## 🧪 Correr tests
+
+En el backend:
+   NODE_ENV=test npm test
+
+---
+
+## 🌐 Despliegue
+
+El proyecto puede desplegarse en:
+
+- Frontend: Vercel
+- Backend: Railway o Render
+
+---
+
+## 🛠 Scripts disponibles
+
+Frontend:
+   npm run dev – Desarrollo
+   npm run build – Producción
+
+Backend:
+   npm run dev – Desarrollo con nodemon
+   npm test – Tests unitarios
+
+---
+
+## 👨‍💻 Autor
+
+Desarrollado por José Alejandro Bueno Salazar
+https://github.com/josebuenomultimedia
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo licencia MIT.
