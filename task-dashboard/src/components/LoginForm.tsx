@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 import { useAppDispatch } from '../app/hooks';
 import { setToken } from '../features/auth/authSlice';
 import { fetchUserInfo } from '../features/auth/authThunks';
+import api from '../api/axiosInstance';
 
 const LoginForm = () => {
   const [email, setEmailInput] = useState('');
@@ -13,7 +14,7 @@ const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
+      const res = await api.post('/auth/login', {
         email,
         password,
       });

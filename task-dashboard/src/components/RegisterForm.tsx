@@ -3,7 +3,8 @@ import axios, { AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-const SITE_KEY = '6LereXUrAAAAAHzpyBNket1pLI1Tce17xlUpAAO_'; // Reemplaza por tu site key
+const SITE_KEY = '6LeoTnsrAAAAACptVV60qmBQaY4N98u40Un7oBHY';
+//'6LereXUrAAAAAHzpyBNket1pLI1Tce17xlUpAAO_';  Reemplaza por tu site key
 
 const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
   const [email, setEmail] = useState('');
