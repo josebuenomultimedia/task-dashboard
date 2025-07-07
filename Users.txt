@@ -1,0 +1,17 @@
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVmMTRmMjgzYjUyODA4ZjQ5MTJjMDUiLCJpYXQiOjE3NTEwNjIzMjMsImV4cCI6MTc1MTY2NzEyM30.UTkX7AXJriQYF3If9HAo_QwdcfH3btO7dUjk8uEbsg0"
+}
+
+{
+  "email": "ana@example.com",
+  "password": "password123"
+}
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVmMWZlZjcyNDZmN2VmN2M2Y2MyOTAiLCJpYXQiOjE3NTEwNjQ1NzgsImV4cCI6MTc1MTY2OTM3OH0.bOoKjB2Wg_CEP43-B3gDo01mMF1cjJagjbL8BHimAwA"
+}
