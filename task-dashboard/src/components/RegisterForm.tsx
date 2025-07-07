@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import ReCAPTCHA from 'react-google-recaptcha';
 import api from '../api/axiosInstance';
 
-const SITE_KEY = '6LereXUrAAAAAHzpyBNket1pLI1Tce17xlUpAAO_';
+const SITE_KEY = '6LeYVXsrAAAAALSDGXbApwJoBrtw4oU2_NrR7Wmk';
 
 const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
   const [email, setEmail] = useState('');
