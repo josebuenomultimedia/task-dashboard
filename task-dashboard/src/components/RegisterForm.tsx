@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { toast } from 'react-hot-toast';
 import ReCAPTCHA from 'react-google-recaptcha';
+import api from '../api/axiosInstance';
 
-const SITE_KEY = '6LeoTnsrAAAAACptVV60qmBQaY4N98u40Un7oBHY';
-//'6LereXUrAAAAAHzpyBNket1pLI1Tce17xlUpAAO_';  Reemplaza por tu site key
+const SITE_KEY = '6LereXUrAAAAAHzpyBNket1pLI1Tce17xlUpAAO_';
 
 const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/auth/register', {
+      await api.post('/auth/register', {
         email,
         password,
         recaptchaToken,
