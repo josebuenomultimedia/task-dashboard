@@ -6,13 +6,7 @@ exports.register = async (req, res) => {
   try {
     const { email, password, recaptchaToken } = req.body;
 
-    // 🚨 Solo para pruebas iniciales: desactivar validación
-    // return res.status(400).json({ error: "La verificación de reCAPTCHA está desactivada temporalmente." });
-
-    // Si quieres desactivar de forma controlada:
-    if (process.env.NODE_ENV !== "production") {
-      console.log("ReCAPTCHA validación omitida en entorno no producción.");
-    } else {
+    if (process.env.NODE_ENV !== "test") {
       const response = await fetch(
         `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
         { method: "POST" }
