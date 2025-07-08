@@ -19,10 +19,10 @@ const TaskBoard = () => {
         <motion.div
           key={status}
           data-status={status}
-          layout // 🎯 permite animación al mover elementos dentro
+          layout
           className="bg-white p-4 rounded-xl shadow-md min-h-[150px] sm:min-h-[250px]"
         >
-          <h2 className="text-lg font-semibold text-indigo-600 mb-3">
+          <h2 className="text-sm font-medium text-gray-600 uppercase tracking-wide mb-3">
             {labels[status]}
           </h2>
 

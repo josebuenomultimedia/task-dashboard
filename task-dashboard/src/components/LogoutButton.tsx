@@ -9,7 +9,7 @@ const LogoutButton = () => {
   const handleLogout = () => {
     dispatch(clearCredentials());
     dispatch(clearTasks());
-    toast.success('✅ Sesión cerrada');
+    toast.success('Sesión cerrada');
   };
 
   return (

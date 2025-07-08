@@ -17,13 +17,13 @@ const TaskForm = () => {
     dispatch(addTaskToAPI({ title: title.trim() }))
       .unwrap()
       .then((task) => {
-        toast.success('✅ Tarea guardada con éxito');
-        console.log('✅ Tarea guardada:', task);
+        toast.success('Tarea guardada con éxito');
+        console.log('Tarea guardada:', task);
       })
       .catch((err) => {
         const msg = err?.response?.data?.error || 'Error desconocido';
-        toast.error(`❌ No se pudo guardar la tarea: ${msg}`);
-        console.error('❌ Detalles:', err);
+        toast.error(`No se pudo guardar la tarea: ${msg}`);
+        console.error('Detalles:', err);
       });
 
     setTitle('');
@@ -31,19 +31,21 @@ const TaskForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-4 flex gap-2">
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Escribe una nueva tarea..."
-        className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-400"
-      />
-      <button
-        type="submit"
-        className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition"
-      >
-        ➕ Agregar
-      </button>
+      <div className="flex w-full items-center gap-2">
+        <input
+          type="text"
+          placeholder="Escribe una nueva tarea..."
+          className="flex-1 border border-gray-300 rounded-md px-4 py-2 text-sm"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <button
+          className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold w-10 h-10 rounded-full transition"
+          title="Agregar tarea"
+        >
+          +
+        </button>
+      </div>
     </form>
   );
 };

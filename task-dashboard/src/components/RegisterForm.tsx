@@ -31,7 +31,7 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
       });
 
       toast.success(
-        '✅ Usuario creado correctamente. Ahora puedes iniciar sesión.'
+        'Usuario creado correctamente. Ahora puedes iniciar sesión.'
       );
       onSwitchToLogin();
     } catch (error) {
@@ -43,22 +43,29 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 max-w-sm mx-auto mt-6"
+      className="
+        flex flex-col gap-2 sm:gap-3
+        w-full max-w-xs sm:max-w-sm md:max-w-md
+        mx-auto mt-4 sm:mt-6
+        px-3
+      "
     >
-      <h2 className="text-xl font-semibold mb-2">Crear cuenta</h2>
+      <h2 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
+        Crear cuenta
+      </h2>
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm sm:text-base"
       />
       <input
         type="password"
         placeholder="Contraseña"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm sm:text-base"
       />
       <ReCAPTCHA
         sitekey={SITE_KEY}
@@ -66,12 +73,12 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
       />
       <button
         type="submit"
-        className="bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+        className="bg-green-500 text-white py-2 rounded hover:bg-green-600 transition text-sm sm:text-base"
       >
         Registrarse
       </button>
       <p
-        className="text-sm text-blue-600 hover:underline cursor-pointer"
+        className="text-sm text-blue-600 hover:underline cursor-pointer mt-1"
         onClick={onSwitchToLogin}
       >
         ¿Ya tienes cuenta? Inicia sesión

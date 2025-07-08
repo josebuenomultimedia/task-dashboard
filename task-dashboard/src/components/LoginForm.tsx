@@ -21,7 +21,7 @@ const LoginForm = () => {
       const { token } = res.data;
       dispatch(setToken(token));
       await dispatch(fetchUserInfo());
-      toast.success('✅ Login correcto');
+      toast.success('Login correcto');
     } catch (error) {
       const err = error as AxiosError<{ error: string }>;
       toast.error(err.response?.data?.error || 'Error al iniciar sesión.');
@@ -31,26 +31,33 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 max-w-sm mx-auto mt-6"
+      className="
+        flex flex-col gap-2 sm:gap-3
+        w-full max-w-xs sm:max-w-sm md:max-w-md
+        mx-auto mt-4 sm:mt-6
+        px-3
+      "
     >
-      <h2 className="text-xl font-semibold mb-2">Iniciar Sesión</h2>
+      <h2 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
+        Iniciar Sesión
+      </h2>
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmailInput(e.target.value)}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm sm:text-base"
       />
       <input
         type="password"
         placeholder="Contraseña"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded"
+        className="border p-2 rounded text-sm sm:text-base"
       />
       <button
         type="submit"
-        className="bg-indigo-500 text-white py-2 rounded hover:bg-indigo-600 transition"
+        className="bg-indigo-500 text-white py-2 rounded hover:bg-indigo-600 transition text-sm sm:text-base"
       >
         Iniciar sesión
       </button>

@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   font-family: 'Inter', sans-serif;
+  background: url('https://www.toptal.com/designers/subtlepatterns/patterns/symphony.png')
+    no-repeat center center fixed;
+  background-size: cover;
+  background-color: #f4f4f5; /* Fallback color */
 }
