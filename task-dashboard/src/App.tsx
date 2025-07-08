@@ -45,6 +45,13 @@ function App() {
               >
                 ¿No tienes cuenta? Regístrate aquí
               </p>
+              <p className="text-xs text-gray-600 text-center mt-2">
+                ¿Olvidaste tu contraseña? Contáctame a{' '}
+                <a href="mailto:tucorreo@ejemplo.com" className="underline">
+                  josebuenomultimedia@gmail.com
+                </a>
+              </p>
+
               <button
                 onClick={() => dispatch(enableGuestModeAction())}
                 className="

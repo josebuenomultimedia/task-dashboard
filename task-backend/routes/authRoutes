@@ -6,9 +6,11 @@ const {
   getProfile,
 } = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
+const { deleteAccount } = require("../controllers/authController");
 
 router.post("/register", register);
 router.post("/login", login);
 router.get("/me", authMiddleware, getProfile);
+router.delete("/delete-account", authMiddleware, deleteAccount);
 
 module.exports = router;

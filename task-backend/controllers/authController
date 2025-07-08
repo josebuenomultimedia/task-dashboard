@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Task = require("../models/Task");
 
 exports.register = async (req, res) => {
   try {
@@ -76,5 +77,36 @@ exports.getProfile = async (req, res) => {
   } catch (err) {
     console.error("❌ Error al obtener perfil:", err);
     res.status(500).json({ error: "Error al obtener perfil." });
+  }
+};
+
+exports.deleteAccount = async (req, res) => {
+  try {
+    const { password, confirmText } = req.body;
+
+    if (confirmText !== "QUIERO ELIMINAR MI CUENTA") {
+      return res.status(400).json({ error: "La confirmación no coincide." });
+    }
+
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado." });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Contraseña incorrecta." });
+    }
+
+    // Eliminar todas las tareas del usuario
+    await Task.deleteMany({ user: req.user.userId });
+
+    // Eliminar usuario
+    await User.findByIdAndDelete(req.user.userId);
+
+    res.json({ message: "Cuenta y datos eliminados correctamente." });
+  } catch (err) {
+    console.error("❌ Error al borrar cuenta:", err);
+    res.status(500).json({ error: "Error al eliminar cuenta." });
   }
 };
