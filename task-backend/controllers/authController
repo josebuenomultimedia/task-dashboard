@@ -2,6 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Task = require("../models/Task");
+const crypto = require("crypto");
+const { sendResetEmail } = require("../utils/sendEmail");
 
 exports.register = async (req, res) => {
   try {
@@ -109,4 +111,46 @@ exports.deleteAccount = async (req, res) => {
     console.error("❌ Error al borrar cuenta:", err);
     res.status(500).json({ error: "Error al eliminar cuenta." });
   }
+};
+
+exports.requestReset = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: "No existe ninguna cuenta con ese correo." });
+  }
+
+  const token = crypto.randomBytes(20).toString("hex");
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hora
+  await user.save();
+
+  const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+  await sendResetEmail(email, resetLink);
+
+  res.json({ message: "Hemos enviado un enlace de recuperación a tu correo." });
+};
+
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: "El token no es válido o ha expirado." });
+  }
+
+  const hashed = await bcrypt.hash(newPassword, 10);
+  user.password = hashed;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  res.json({ message: "Contraseña actualizada correctamente." });
 };

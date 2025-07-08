@@ -4,12 +4,19 @@ const {
   register,
   login,
   getProfile,
+  deleteAccount,
+  requestReset,
+  resetPassword,
 } = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
-const { deleteAccount } = require("../controllers/authController");
 
+// Rutas públicas
 router.post("/register", register);
 router.post("/login", login);
+router.post("/request-reset", requestReset);
+router.post("/reset-password", resetPassword);
+
+// Rutas protegidas
 router.get("/me", authMiddleware, getProfile);
 router.delete("/delete-account", authMiddleware, deleteAccount);
 

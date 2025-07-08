@@ -7,6 +7,9 @@ import RegisterForm from './components/RegisterForm';
 import { useAppDispatch } from './app/hooks';
 import { fetchUserInfo } from './features/auth/authThunks';
 import { enableGuestMode as enableGuestModeAction } from './features/auth/authSlice';
+import { Routes, Route, Link } from 'react-router-dom';
+import RequestReset from './pages/RequestReset';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -23,54 +26,66 @@ function App() {
 
   if (!token && !guestMode) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10 space-y-4 -mt-12">
-          <div className="text-center space-y-1">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-              Task Dashboard
-            </h1>
-            <p className="text-sm text-gray-500">
-              Hecho por José Alejandro Bueno Salazar
-            </p>
-          </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+              <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 sm:p-8 md:p-10 space-y-4 -mt-12">
+                <div className="text-center space-y-1">
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+                    Task Dashboard
+                  </h1>
+                  <p className="text-sm text-gray-500">
+                    Hecho por José Alejandro Bueno Salazar
+                  </p>
+                </div>
 
-          {isRegistering ? (
-            <RegisterForm onSwitchToLogin={() => setIsRegistering(false)} />
-          ) : (
-            <>
-              <LoginForm />
-              <p
-                className="text-sm text-indigo-600 hover:underline cursor-pointer text-center"
-                onClick={() => setIsRegistering(true)}
-              >
-                ¿No tienes cuenta? Regístrate aquí
-              </p>
-              <p className="text-xs text-gray-600 text-center mt-2">
-                ¿Olvidaste tu contraseña? Contáctame a{' '}
-                <a href="mailto:tucorreo@ejemplo.com" className="underline">
-                  josebuenomultimedia@gmail.com
-                </a>
-              </p>
-
-              <button
-                onClick={() => dispatch(enableGuestModeAction())}
-                className="
-                  w-full
-                  bg-gray-700
-                  text-white
-                  py-2
-                  rounded
-                  hover:bg-gray-800
-                  transition
-                  text-sm sm:text-base
-                "
-              >
-                Ingresar en modo prueba
-              </button>
-            </>
-          )}
-        </div>
-      </div>
+                {isRegistering ? (
+                  <RegisterForm
+                    onSwitchToLogin={() => setIsRegistering(false)}
+                  />
+                ) : (
+                  <>
+                    <LoginForm />
+                    <p
+                      className="text-sm text-indigo-600 hover:underline cursor-pointer text-center"
+                      onClick={() => setIsRegistering(true)}
+                    >
+                      ¿No tienes cuenta? Regístrate aquí
+                    </p>
+                    <p className="text-xs text-gray-600 text-center mt-2">
+                      <Link
+                        to="/request-reset"
+                        className="underline hover:text-indigo-600"
+                      >
+                        ¿Olvidaste tu contraseña?
+                      </Link>
+                    </p>
+                    <button
+                      onClick={() => dispatch(enableGuestModeAction())}
+                      className="
+                        w-full
+                        bg-gray-700
+                        text-white
+                        py-2
+                        rounded
+                        hover:bg-gray-800
+                        transition
+                        text-sm sm:text-base
+                      "
+                    >
+                      Ingresar en modo prueba
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          }
+        />
+        <Route path="/request-reset" element={<RequestReset />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+      </Routes>
     );
   }
 

@@ -33,14 +33,23 @@ exports.createTask = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   try {
+    const updateData = { ...req.body };
+
+    // Si el nuevo estado es in-progress, resetear notified
+    if (req.body.status === "in-progress") {
+      updateData.notified = false;
+    }
+
     const updated = await Task.findOneAndUpdate(
       { _id: req.params.id, user: req.user.userId },
-      req.body,
+      updateData,
       { new: true }
     );
+
     if (!updated) {
       return res.status(404).json({ error: "Tarea no encontrada." });
     }
+
     res.json(updated);
   } catch (err) {
     console.error("❌ Error al actualizar tarea:", err);
