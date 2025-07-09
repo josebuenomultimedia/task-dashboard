@@ -20,7 +20,30 @@ Aplicación avanzada de gestión de tareas estilo Kanban con autenticación segu
 
 ## 🖼 Capturas de pantalla
 
-Próximamente
+Pantalla de inicio / Login
+
+![image](https://github.com/user-attachments/assets/a02ee45d-18db-4a60-804b-b42a8176004b)
+
+Registro de usuario con Google Captcha
+
+![image](https://github.com/user-attachments/assets/5731a053-f567-45c2-bf79-20d110c30162)
+
+Panel principal Kanban
+
+![image](https://github.com/user-attachments/assets/5665f7d9-8a2c-4631-b438-d1ab7a646505)
+
+Recordatorio de tarea antigua
+
+![image](https://github.com/user-attachments/assets/1e8d2cad-3a93-4508-8290-5827bb94e000)
+
+Recuperación de contraseña
+
+![image](https://github.com/user-attachments/assets/b26325f3-ac7a-4cb6-88ac-8e33b3f94d9c)
+
+Email de recuperación
+
+![image](https://github.com/user-attachments/assets/5260ea14-aeb4-45fd-83b3-d63cc916692f)
+
 
 ---
 
