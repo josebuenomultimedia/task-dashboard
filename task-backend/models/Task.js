@@ -9,7 +9,7 @@ const TaskSchema = new mongoose.Schema(
       enum: ["todo", "in-progress", "done"],
       default: "todo",
     },
-    notified: { type: Boolean, default: false },
+    notified: { type: Boolean, default: false }, // ✅ Aquí
   },
   { timestamps: true }
 );

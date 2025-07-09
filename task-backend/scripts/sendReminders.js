@@ -12,10 +12,10 @@ const { sendReminderEmail } = require("../utils/sendEmail");
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-    // Encontrar todas las tareas en progreso de hace más de 7 días
+    // Buscar tareas en progreso de hace más de 7 días y que no hayan sido notificadas
     const tasks = await Task.find({
       status: "in-progress",
-      // createdAt: { $lte: oneWeekAgo },
+      createdAt: { $lte: oneWeekAgo },
       notified: false,
     }).populate("user");
 
@@ -25,12 +25,11 @@ const { sendReminderEmail } = require("../utils/sendEmail");
     }
 
     // Agrupar tareas por usuario
-    // Agrupar tareas por usuario
     const userTasks = {};
     tasks.forEach((task) => {
       if (!task.user || !task.user._id) {
         console.log(`⚠️ Tarea sin usuario asignado: ${task._id}`);
-        return; // saltar esta tarea
+        return;
       }
 
       const userId = task.user._id.toString();
@@ -40,22 +39,19 @@ const { sendReminderEmail } = require("../utils/sendEmail");
           tasks: [],
         };
       }
-      userTasks[userId].tasks.push(task.title);
+      userTasks[userId].tasks.push(task);
     });
 
-    // Enviar un correo a cada usuario
+    // Enviar correos y marcar como notificadas
     for (const userId in userTasks) {
       const { email, tasks } = userTasks[userId];
-      await sendReminderEmail(email, tasks);
+      const titles = tasks.map((t) => t.title);
+      await sendReminderEmail(email, titles);
 
-      // Marcar como notificadas
+      // Marcar todas las tareas como notificadas
+      const taskIds = tasks.map((t) => t._id);
       await Task.updateMany(
-        {
-          user: userId,
-          status: "in-progress",
-          notified: false,
-          createdAt: { $lte: oneWeekAgo },
-        },
+        { _id: { $in: taskIds } },
         { $set: { notified: true } }
       );
 

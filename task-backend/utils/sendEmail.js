@@ -4,12 +4,13 @@ const SibTransport = require("nodemailer-sendinblue-transport");
 const transporter = nodemailer.createTransport(
   new SibTransport({
     apiKey: process.env.BREVO_API_KEY,
+    logger: true,
   })
 );
 
 exports.sendResetEmail = async (to, resetLink) => {
   await transporter.sendMail({
-    from: "noreply@taskapp.com", // Puedes usar noreply@tunombre.com
+    from: "TaskApp <josebuenomultimedia@gmail.com>",
     to,
     subject: "Recuperar contraseña - Task Dashboard",
     html: `
@@ -25,7 +26,7 @@ exports.sendReminderEmail = async (to, tasks) => {
   const taskList = tasks.map((t) => `<li>${t}</li>`).join("");
 
   await transporter.sendMail({
-    from: "noreply@taskapp.com",
+    from: "TaskApp <josebuenomultimedia@gmail.com>",
     to,
     subject: "Tienes tareas pendientes",
     html: `
