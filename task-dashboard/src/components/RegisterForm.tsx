@@ -67,10 +67,13 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
         onChange={(e) => setPassword(e.target.value)}
         className="border p-2 rounded text-sm sm:text-base"
       />
-      <ReCAPTCHA
-        sitekey={SITE_KEY}
-        onChange={(token) => setRecaptchaToken(token)}
-      />
+      {/* Wrapper responsivo */}
+      <div className="scale-[0.85] origin-top-left sm:scale-100">
+        <ReCAPTCHA
+          sitekey={SITE_KEY}
+          onChange={(token) => setRecaptchaToken(token)}
+        />
+      </div>
       <button
         type="submit"
         className="bg-green-500 text-white py-2 rounded hover:bg-green-600 transition text-sm sm:text-base"
