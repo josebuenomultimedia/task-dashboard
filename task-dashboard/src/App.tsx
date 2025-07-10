@@ -170,10 +170,18 @@ function App() {
                               <strong>+ Nueva tarea</strong>.
                             </li>
                             <li>
+                              Marcar tareas como importantes, que se muestran
+                              primero y resaltadas.
+                            </li>
+                            <li>
                               Mover tarjetas arrastrándolas o usando los botones
                               de estado.
                             </li>
                             <li>Eliminar tareas con el icono de papelera.</li>
+                            <li>
+                              Cambiar entre modo claro y modo oscuro,
+                              conservando la preferencia.
+                            </li>
                           </ul>
                         </li>
                         <li>

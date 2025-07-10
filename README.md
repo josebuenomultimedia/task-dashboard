@@ -15,6 +15,13 @@ Aplicación avanzada de gestión de tareas estilo Kanban con autenticación segu
 - Panel Kanban interactivo y responsivo
 - Diseño moderno compatible con dispositivos móviles y escritorio
 - Pruebas unitarias de endpoints y lógica con Jest y Supertest
+- Validación en tiempo real de formularios (campos de email y contraseña con mensajes contextualizados)
+- Validación de formato de correo electrónico en registro
+- Modal de confirmación para borrar todas las tareas
+- Tema claro y oscuro con selector persistente
+- Etiquetado de tareas como importantes (resaltadas y ordenadas primero)
+- Selector de tema siempre visible y responsive
+- Visualización clara de errores sin depender de alertas del navegador
 
 ---
 
@@ -43,7 +50,6 @@ Recuperación de contraseña
 Email de recuperación
 
 ![image](https://github.com/user-attachments/assets/5260ea14-aeb4-45fd-83b3-d63cc916692f)
-
 
 ---
 
@@ -148,6 +154,11 @@ node scripts/sendReminders.js # Ejecutar recordatorio manual de tareas
 - Recordatorio automático de tareas mediante cron diario
 - Código limpio y comentado, listo para equipos ágiles
 - Preparada para nuevas funcionalidades (notificaciones push, soporte multiusuario)
+- Validación contextual con mensajes en campos específicos
+- Soporte de modo claro/oscuro con persistencia en localStorage
+- Modal de confirmación elegante y accesible para acciones destructivas
+- Etiquetado visual de tareas importantes con borde destacado y prioridad en orden
+- Experiencia de usuario optimizada para móviles y escritorio
 
 ---
 
