@@ -12,17 +12,21 @@ exports.getTasks = async (req, res) => {
 
 exports.createTask = async (req, res) => {
   try {
-    const { title, status } = req.body;
+    const { title, status, important } = req.body; // ⬅️ Incluimos important
+
     if (!title || typeof title !== "string" || title.trim() === "") {
       return res
         .status(400)
         .json({ error: "El campo 'title' es obligatorio." });
     }
+
     const newTask = new Task({
       title: title.trim(),
       status: status || "todo",
+      important: important ?? false, // ⬅️ Guardar important si viene
       user: req.user.userId,
     });
+
     const saved = await newTask.save();
     res.status(201).json(saved);
   } catch (err) {

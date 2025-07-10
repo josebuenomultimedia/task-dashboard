@@ -26,11 +26,10 @@ describe("Tasks API", () => {
 
   afterAll(async () => {
     await server.close();
-    // Si tienes conexión a Mongoose, ciérrala también
     await require("mongoose").connection.close();
   });
 
-  test("Create a task", async () => {
+  test("Create a regular task", async () => {
     const res = await request(server)
       .post("/api/tasks")
       .set("Authorization", `Bearer ${token}`)
@@ -41,6 +40,22 @@ describe("Tasks API", () => {
 
     expect(res.statusCode).toBe(201);
     expect(res.body.title).toBe("Test task");
+    expect(res.body.important).toBe(false); // Debe ser false por default
+  });
+
+  test("Create an important task", async () => {
+    const res = await request(server)
+      .post("/api/tasks")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        title: "Important task",
+        status: "todo",
+        important: true,
+      });
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.title).toBe("Important task");
+    expect(res.body.important).toBe(true);
   });
 
   test("Get tasks", async () => {
@@ -50,5 +65,9 @@ describe("Tasks API", () => {
 
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
+
+    // Confirmar que al menos una tarea tenga importante=true
+    const hasImportant = res.body.some((task) => task.important === true);
+    expect(hasImportant).toBe(true);
   });
 });

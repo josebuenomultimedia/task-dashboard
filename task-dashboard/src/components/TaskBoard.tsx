@@ -37,6 +37,7 @@ const TaskBoard = () => {
           <AnimatePresence mode="popLayout">
             {tasks
               .filter((task) => task.status === status)
+              .sort((a, b) => (b.important ? 1 : 0) - (a.important ? 1 : 0))
               .map((task) => (
                 <TaskCard key={task._id} task={task} />
               ))}

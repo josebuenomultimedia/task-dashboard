@@ -6,6 +6,7 @@ export interface Task {
   _id: string;
   title: string;
   status: 'todo' | 'in-progress' | 'done';
+  important?: boolean;
 }
 
 interface TasksState {
@@ -36,16 +37,16 @@ export const loadTasksFromAPI = createAsyncThunk<
 // 🔹 Crear tarea
 export const addTaskToAPI = createAsyncThunk<
   Task,
-  { title: string },
+  { title: string; important?: boolean },
   { state: RootState }
 >('tasks/addTask', async (task, { getState }) => {
   const { guestMode } = getState().auth;
   if (guestMode) {
-    // Crear tarea simulada
     return {
       _id: Math.random().toString(36).substring(2, 9),
       title: task.title,
       status: 'todo',
+      important: task.important ?? false,
     };
   }
   const response = await axiosInstance.post('/tasks', {

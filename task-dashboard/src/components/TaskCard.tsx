@@ -66,19 +66,30 @@ const TaskCard = ({ task }: Props) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3 }}
-      className="
-        p-4
-        mb-3
-        rounded-md
-        border border-border
-        shadow-sm
-        bg-card
-        hover:shadow-md
-        transition
-        cursor-grab active:cursor-grabbing
-        flex flex-col gap-2
-      "
+      className={`
+  p-4 mb-3 rounded-md border 
+  ${task.important ? 'border-red-500' : 'border-border'}
+  shadow-sm bg-card hover:shadow-md transition
+  cursor-grab active:cursor-grabbing flex flex-col gap-2
+`}
     >
+      {task.important && (
+        <span className="text-red-500 text-xs font-medium flex items-center gap-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.72-1.36 3.485 0l6.518 11.59c.75 1.334-.213 2.986-1.742 2.986H3.48c-1.53 0-2.492-1.652-1.743-2.986L8.257 3.1zM11 13a1 1 0 10-2 0 1 1 0 002 0zm-1-2a1 1 0 01-1-1V7a1 1 0 112 0v3a1 1 0 01-1 1z"
+              clipRule="evenodd"
+            />
+          </svg>
+          Importante
+        </span>
+      )}
       <p className="text-sm font-medium text-text">{task.title}</p>
 
       <span
