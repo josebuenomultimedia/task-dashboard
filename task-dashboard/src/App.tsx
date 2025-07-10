@@ -10,6 +10,7 @@ import { enableGuestMode as enableGuestModeAction } from './features/auth/authSl
 import { Routes, Route, Link } from 'react-router-dom';
 import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -75,6 +76,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-text">
+      <ThemeToggle />
       <main className="flex-grow">
         <Routes>
           {!token && !guestMode ? (

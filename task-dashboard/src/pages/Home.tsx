@@ -7,26 +7,23 @@ import TaskBoard from '../components/TaskBoard';
 import { clearTasks, loadTasksFromAPI } from '../features/tasks/tasksSlice';
 import LogoutButton from '../components/LogoutButton';
 import DeleteAccountModal from '../components/DeleteAccountModal';
+import ConfirmClearModal from '../components/ConfirmClearModal';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const email = useSelector((state: RootState) => state.auth.email);
   const guestMode = useSelector((state: RootState) => state.auth.guestMode);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showClearModal, setShowClearModal] = useState(false);
 
   useEffect(() => {
     dispatch(loadTasksFromAPI());
   }, [dispatch]);
 
-  const handleClear = () => {
-    if (confirm('¿Seguro que deseas borrar todas las tareas?')) {
-      dispatch(clearTasks());
-    }
-  };
-
   return (
     <main className="p-4 max-w-4xl mx-auto mt-6">
-      <div className="flex justify-between items-start mb-4 bg-card border border-border p-4 shadow-sm">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4 bg-card border border-border p-4 shadow-sm">
         <div>
           <h1 className="text-2xl font-semibold text-text">Panel de Tareas</h1>
           {email && <p className="text-sm text-muted">Bienvenido, {email}</p>}
@@ -37,32 +34,50 @@ const Home = () => {
             </p>
           )}
         </div>
-        <div className="flex flex-col items-end gap-2">
-          <LogoutButton />
+        <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+          {/* Borrar todas las tareas */}
+          <button
+            onClick={() => setShowClearModal(true)}
+            className="text-sm border border-error text-error px-3 py-1 rounded-md hover:bg-error/10 transition"
+          >
+            Borrar todas las tareas
+          </button>
+
+          {/* Borrar mi cuenta */}
           {!guestMode && (
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="text-sm bg-error hover:bg-red-700 text-white px-3 py-1 transition"
+              className="text-sm bg-error hover:bg-red-700 text-white px-3 py-1 rounded-md transition"
             >
               Borrar mi cuenta
             </button>
           )}
+
+          {/* Logout */}
+          <LogoutButton />
         </div>
       </div>
 
+      {/* Formulario de creación de tarea */}
       <TaskForm />
 
-      <button
-        onClick={handleClear}
-        className="mb-4 bg-error hover:bg-red-700 text-white text-sm px-4 py-2 rounded-md transition"
-      >
-        Borrar todas las tareas
-      </button>
-
+      {/* Listado de tareas */}
       <TaskBoard />
 
+      {/* Modal de borrar cuenta */}
       {showDeleteModal && (
         <DeleteAccountModal onClose={() => setShowDeleteModal(false)} />
+      )}
+
+      {/* Modal de confirmar borrado de todas las tareas */}
+      {showClearModal && (
+        <ConfirmClearModal
+          onConfirm={() => {
+            dispatch(clearTasks());
+            setShowClearModal(false);
+          }}
+          onCancel={() => setShowClearModal(false)}
+        />
       )}
     </main>
   );

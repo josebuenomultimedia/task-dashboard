@@ -10,16 +10,43 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    recaptcha?: string;
+  }>({});
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
 
-    if (!email || !password) {
-      toast.error('Todos los campos son obligatorios.');
-      return;
+    const newErrors: typeof errors = {};
+    let hasError = false;
+
+    if (!email.trim()) {
+      newErrors.email = 'Por favor introduce tu correo.';
+      hasError = true;
+    } else if (!validateEmail(email.trim())) {
+      newErrors.email = 'Por favor introduce un correo válido.';
+      hasError = true;
     }
+
+    if (!password.trim()) {
+      newErrors.password = 'Por favor introduce una contraseña.';
+      hasError = true;
+    }
+
     if (!recaptchaToken) {
-      toast.error('Por favor confirma el reCAPTCHA.');
+      newErrors.recaptcha = 'Por favor confirma el reCAPTCHA.';
+      hasError = true;
+    }
+
+    if (hasError) {
+      setErrors(newErrors);
       return;
     }
 
@@ -36,7 +63,17 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
       onSwitchToLogin();
     } catch (error) {
       const err = error as AxiosError<{ error: string }>;
-      toast.error(err.response?.data?.error || 'Error al registrar usuario.');
+      const message =
+        err.response?.data?.error || 'Error al registrar usuario.';
+
+      if (/correo/i.test(message)) {
+        setErrors({ email: message });
+      } else if (/contraseña/i.test(message)) {
+        setErrors({ password: message });
+      } else {
+        // Si no se sabe, mostrar como error general en el email
+        setErrors({ email: message });
+      }
     }
   };
 
@@ -50,25 +87,36 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
       "
     >
       <h2 className="text-xl font-semibold mb-2 text-text">Crear cuenta</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="bg-card border-2 border-border rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="bg-card border-2 border-border rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
-      />
+      <div className="flex flex-col gap-1">
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={`bg-card border-2 ${errors.email ? 'border-error' : 'border-border'} rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary`}
+        />
+        {errors.email && <p className="text-xs text-error">{errors.email}</p>}
+      </div>
+      <div className="flex flex-col gap-1">
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={`bg-card border-2 ${errors.password ? 'border-error' : 'border-border'} rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary`}
+        />
+        {errors.password && (
+          <p className="text-xs text-error">{errors.password}</p>
+        )}
+      </div>
       <div className="scale-[0.95] sm:scale-100">
         <ReCAPTCHA
           sitekey={SITE_KEY}
           onChange={(token) => setRecaptchaToken(token)}
         />
+        {errors.recaptcha && (
+          <p className="text-xs text-error mt-1">{errors.recaptcha}</p>
+        )}
       </div>
       <button
         type="submit"
