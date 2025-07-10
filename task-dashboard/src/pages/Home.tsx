@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../app/hooks';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../app/store';
@@ -6,15 +6,13 @@ import TaskForm from '../components/TaskForm';
 import TaskBoard from '../components/TaskBoard';
 import { clearTasks, loadTasksFromAPI } from '../features/tasks/tasksSlice';
 import LogoutButton from '../components/LogoutButton';
-import axiosInstance from '../api/axiosInstance';
-import { clearCredentials } from '../features/auth/authSlice';
-import { toast } from 'react-hot-toast';
-import type { AxiosError } from 'axios';
+import DeleteAccountModal from '../components/DeleteAccountModal';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const email = useSelector((state: RootState) => state.auth.email);
   const guestMode = useSelector((state: RootState) => state.auth.guestMode);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     dispatch(loadTasksFromAPI());
@@ -23,34 +21,6 @@ const Home = () => {
   const handleClear = () => {
     if (confirm('¿Seguro que deseas borrar todas las tareas?')) {
       dispatch(clearTasks());
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    const confirmText = prompt(
-      '⚠️ Escribe EXACTAMENTE:\nQUIERO ELIMINAR MI CUENTA\n\nEsto borrará tu cuenta y todas tus tareas.'
-    );
-    if (confirmText !== 'QUIERO ELIMINAR MI CUENTA') {
-      toast.error('La confirmación no coincide.');
-      return;
-    }
-
-    const password = prompt('Por seguridad, introduce tu contraseña:');
-    if (!password) {
-      toast.error('Contraseña requerida.');
-      return;
-    }
-
-    try {
-      await axiosInstance.delete('/auth/delete-account', {
-        data: { password, confirmText },
-      });
-      toast.success('✅ Cuenta eliminada correctamente.');
-      dispatch(clearCredentials());
-      dispatch(clearTasks());
-    } catch (error) {
-      const err = error as AxiosError<{ error: string }>;
-      toast.error(err.response?.data?.error || 'Error al borrar cuenta.');
     }
   };
 
@@ -75,7 +45,7 @@ const Home = () => {
           <LogoutButton />
           {!guestMode && (
             <button
-              onClick={handleDeleteAccount}
+              onClick={() => setShowDeleteModal(true)}
               className="bg-red-700 text-white text-xs px-3 py-1 rounded hover:bg-red-800 transition"
             >
               Borrar mi cuenta
@@ -94,6 +64,10 @@ const Home = () => {
       </button>
 
       <TaskBoard />
+
+      {showDeleteModal && (
+        <DeleteAccountModal onClose={() => setShowDeleteModal(false)} />
+      )}
     </main>
   );
 };
