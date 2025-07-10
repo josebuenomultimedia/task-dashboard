@@ -20,9 +20,17 @@ const TaskBoard = () => {
           key={status}
           data-status={status}
           layout
-          className="bg-white p-4 rounded-xl shadow-md min-h-[150px] sm:min-h-[250px]"
+          className={`bg-card border border-border rounded-md shadow-sm p-4 min-h-[150px] sm:min-h-[250px] flex flex-col gap-2
+            ${
+              status === 'todo'
+                ? 'border-t-4 border-gray-300'
+                : status === 'in-progress'
+                  ? 'border-t-4 border-primary'
+                  : 'border-t-4 border-emerald-400'
+            }
+          `}
         >
-          <h2 className="text-sm font-medium text-gray-600 uppercase tracking-wide mb-3">
+          <h2 className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">
             {labels[status]}
           </h2>
 

@@ -32,32 +32,30 @@ const LoginForm = () => {
     <form
       onSubmit={handleSubmit}
       className="
-        flex flex-col gap-2 sm:gap-3
-        w-full max-w-xs sm:max-w-sm md:max-w-md
+        flex flex-col gap-3
+        w-full max-w-md
         mx-auto mt-4 sm:mt-6
         px-3
       "
     >
-      <h2 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
-        Iniciar Sesión
-      </h2>
+      <h2 className="text-xl font-semibold mb-2 text-text">Iniciar Sesión</h2>
       <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmailInput(e.target.value)}
-        className="border p-2 rounded text-sm sm:text-base"
+        className="bg-card border-2 border-border rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
       />
       <input
         type="password"
         placeholder="Contraseña"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded text-sm sm:text-base"
+        className="bg-card border-2 border-border rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
       />
       <button
         type="submit"
-        className="bg-indigo-500 text-white py-2 rounded hover:bg-indigo-600 transition text-sm sm:text-base"
+        className="bg-primary hover:bg-secondary text-white font-medium py-2 rounded-md transition text-sm"
       >
         Iniciar sesión
       </button>

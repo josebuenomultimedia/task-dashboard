@@ -45,18 +45,18 @@ const DeleteAccountModal: React.FC<Props> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-      <div className="bg-white p-6 rounded shadow max-w-sm w-full">
-        <h2 className="text-lg font-semibold mb-2 text-red-700">
+      <div className="bg-card border border-border p-6 rounded-md shadow-lg max-w-sm w-full">
+        <h2 className="text-lg font-semibold mb-2 text-error">
           Eliminar cuenta
         </h2>
-        <p className="text-sm text-gray-700 mb-4">
+        <p className="text-sm text-text mb-4">
           Esta acción eliminará tu cuenta y todas tus tareas de forma
           permanente.
         </p>
-        <p className="text-sm text-gray-700 mb-2">
+        <p className="text-sm text-muted mb-2">
           Para confirmar, escribe exactamente:
         </p>
-        <p className="text-xs font-mono bg-gray-100 p-2 rounded mb-2">
+        <p className="text-xs font-mono bg-muted/10 p-2 rounded mb-2 text-text">
           QUIERO ELIMINAR MI CUENTA
         </p>
         <input
@@ -64,25 +64,25 @@ const DeleteAccountModal: React.FC<Props> = ({ onClose }) => {
           placeholder="Confirmación"
           value={confirmText}
           onChange={(e) => setConfirmText(e.target.value)}
-          className="w-full border p-2 mb-2 rounded"
+          className="w-full bg-card border-2 border-border rounded-md px-3 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary mb-2"
         />
         <input
           type="password"
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 mb-4 rounded"
+          className="w-full bg-card border-2 border-border rounded-md px-3 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary mb-4"
         />
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm bg-gray-300 rounded hover:bg-gray-400"
+            className="px-4 py-2 text-sm border border-border rounded-md text-text hover:bg-border transition"
           >
             Cancelar
           </button>
           <button
             onClick={handleDelete}
-            className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+            className="px-4 py-2 text-sm bg-error hover:bg-red-700 text-white rounded-md transition"
           >
             Eliminar cuenta
           </button>

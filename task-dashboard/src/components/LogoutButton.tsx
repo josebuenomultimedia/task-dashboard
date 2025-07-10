@@ -15,7 +15,7 @@ const LogoutButton = () => {
   return (
     <button
       onClick={handleLogout}
-      className="text-sm text-red-600 hover:underline"
+      className="text-sm text-muted hover:text-primary transition font-medium"
     >
       Cerrar sesión
     </button>

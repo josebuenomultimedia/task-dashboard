@@ -25,12 +25,12 @@ const RequestReset = () => {
   };
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
+    <main className="flex items-center justify-center min-h-screen bg-background px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white/90 backdrop-blur-sm p-8 rounded shadow max-w-md w-full flex flex-col gap-3"
+        className="bg-card border border-border p-6 rounded-md shadow-sm max-w-md w-full flex flex-col gap-3"
       >
-        <h2 className="text-xl font-semibold text-center text-gray-800">
+        <h2 className="text-xl font-semibold text-center text-text">
           Recuperar contraseña
         </h2>
         <input
@@ -38,18 +38,18 @@ const RequestReset = () => {
           placeholder="Tu correo"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border p-2 rounded"
+          className="bg-card border-2 border-border rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
         />
         <button
           type="submit"
-          className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+          className="bg-primary hover:bg-secondary text-white font-medium py-2 rounded-md transition"
         >
           Enviar enlace
         </button>
         <button
           type="button"
           onClick={() => navigate('/')}
-          className="text-sm text-gray-600 hover:text-gray-800 underline mt-2"
+          className="text-sm text-muted hover:text-primary transition text-center mt-1"
         >
           Volver al login
         </button>

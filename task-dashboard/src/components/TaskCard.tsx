@@ -67,48 +67,48 @@ const TaskCard = ({ task }: Props) => {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3 }}
       className="
-        p-3 sm:p-4 md:p-5
-        mb-2 sm:mb-3
-        rounded-lg
-        border border-gray-200
-        shadow-md
-        bg-white
-        hover:shadow-lg
+        p-4
+        mb-3
+        rounded-md
+        border border-border
+        shadow-sm
+        bg-card
+        hover:shadow-md
         transition
         cursor-grab active:cursor-grabbing
+        flex flex-col gap-2
       "
     >
-      <div className="flex flex-col gap-1 flex-1">
-        <p className="text-sm sm:text-base font-normal text-gray-700">
-          {task.title}
-        </p>
-        <span
-          className={`text-[11px] sm:text-xs font-medium rounded px-2 py-0.5 ${
-            task.status === 'todo'
-              ? 'bg-gray-200 text-gray-800'
-              : task.status === 'in-progress'
-                ? 'bg-blue-100 text-blue-700'
-                : 'bg-emerald-100 text-emerald-700'
-          }`}
-        >
-          {task.status === 'todo'
-            ? 'Por hacer'
-            : task.status === 'in-progress'
-              ? 'En progreso'
-              : 'Hecho'}
-        </span>
-      </div>
+      <p className="text-sm font-medium text-text">{task.title}</p>
 
-      <div className="flex gap-1 sm:gap-2 mt-2">
+      <span
+        className={`text-xs font-medium rounded px-2 py-0.5 w-fit
+          ${
+            task.status === 'todo'
+              ? 'bg-gray-100 text-muted'
+              : task.status === 'in-progress'
+                ? 'bg-blue-50 text-blue-600'
+                : 'bg-emerald-50 text-emerald-600'
+          }
+        `}
+      >
+        {task.status === 'todo'
+          ? 'Por hacer'
+          : task.status === 'in-progress'
+            ? 'En progreso'
+            : 'Hecho'}
+      </span>
+
+      <div className="flex gap-2 mt-2">
         <motion.button
           whileTap={{ scale: 0.95 }}
           whileHover={{ scale: 1.05 }}
           transition={{ type: 'spring', stiffness: 300 }}
           onClick={handleMove}
           title="Mover tarea"
-          className="text-gray-500 hover:text-gray-700"
+          className="text-muted hover:text-primary transition text-sm"
         >
-          🔄
+          Mover
         </motion.button>
         <motion.button
           whileTap={{ scale: 0.95 }}
@@ -116,9 +116,9 @@ const TaskCard = ({ task }: Props) => {
           transition={{ type: 'spring', stiffness: 300 }}
           onClick={handleRemove}
           title="Eliminar tarea"
-          className="text-gray-500 hover:text-gray-700"
+          className="text-muted hover:text-error transition text-sm"
         >
-          🗑
+          Eliminar
         </motion.button>
       </div>
     </motion.div>

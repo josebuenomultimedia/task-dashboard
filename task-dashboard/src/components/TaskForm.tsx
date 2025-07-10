@@ -35,12 +35,12 @@ const TaskForm = () => {
         <input
           type="text"
           placeholder="Escribe una nueva tarea..."
-          className="flex-1 border border-gray-300 rounded-md px-4 py-2 text-sm"
+          className="flex-1 bg-card border border-border rounded-md px-4 py-2 text-sm text-text placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <button
-          className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold w-10 h-10 rounded-full transition"
+          className="flex items-center justify-center bg-primary hover:bg-secondary text-white font-medium px-4 py-2 rounded-md transition"
           title="Agregar tarea"
         >
           +
