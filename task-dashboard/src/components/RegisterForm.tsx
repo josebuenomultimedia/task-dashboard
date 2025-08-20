@@ -58,7 +58,7 @@ const RegisterForm = ({ onSwitchToLogin }: { onSwitchToLogin: () => void }) => {
       });
 
       toast.success(
-        'Usuario creado correctamente. Ahora puedes iniciar sesión.'
+        'Registro exitoso. Por favor revisa tu correo para verificar tu cuenta antes de ingresar.'
       );
       onSwitchToLogin();
     } catch (error) {
