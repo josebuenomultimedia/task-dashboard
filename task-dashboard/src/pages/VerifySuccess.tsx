@@ -19,7 +19,7 @@ export default function VerifySuccess() {
           antes de ingresar.
         </p>
         <a
-          href="/login"
+          href="/"
           className="inline-block px-5 py-2.5 rounded-xl bg-black text-white hover:opacity-90 transition"
         >
           Ir al inicio de sesión
