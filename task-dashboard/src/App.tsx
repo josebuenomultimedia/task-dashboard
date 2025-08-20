@@ -11,6 +11,9 @@ import { Routes, Route, Link } from 'react-router-dom';
 import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
 import ThemeToggle from './components/ThemeToggle';
+import VerifySuccess from './pages/VerifySuccess';
+import VerifyError from './pages/VerifyError';
+import ResendVerification from './pages/ResendVerification';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -163,6 +166,31 @@ function App() {
                           recibirás un correo recordatorio automático.
                         </li>
                         <li>
+                          El sistema de autenticación incluye:
+                          <ul className="list-disc pl-5 mt-1 space-y-1">
+                            <li>
+                              Registro con verificación por correo electrónico
+                              (no puedes ingresar hasta confirmar tu cuenta).
+                            </li>
+                            <li>
+                              Prevención de duplicados: si ocurre un error en el
+                              envío del correo, el usuario no queda registrado
+                              en la base de datos.
+                            </li>
+                            <li>
+                              Página de verificación en el frontend, con
+                              mensajes claros de éxito o error al hacer clic en
+                              el enlace enviado.
+                            </li>
+                            <li>
+                              Correos personalizados para{' '}
+                              <strong>registro</strong>,{' '}
+                              <strong>verificación</strong> y{' '}
+                              <strong>recordatorios de tareas</strong>.
+                            </li>
+                          </ul>
+                        </li>
+                        <li>
                           Puedes:
                           <ul className="list-disc pl-5 mt-1 space-y-1">
                             <li>
@@ -195,7 +223,7 @@ function App() {
                             </li>
                             <li>
                               <strong>Backend:</strong> Node.js, Express,
-                              MongoDB, JWT, Brevo (Sendinblue).
+                              MongoDB, JWT, Brevo (Sendinblue), Nodemailer.
                             </li>
                             <li>
                               <strong>Testing:</strong> Jest, Supertest.
@@ -214,6 +242,13 @@ function App() {
               <Route
                 path="/reset-password/:token"
                 element={<ResetPassword />}
+              />
+              {/* Verificación de email */}
+              + <Route path="/Verify/success" element={<VerifySuccess />} />
+              + <Route path="/verify/error" element={<VerifyError />} />+{' '}
+              <Route
+                path="/resend-verification"
+                element={<ResendVerification />}
               />
             </>
           ) : (

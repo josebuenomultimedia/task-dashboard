@@ -59,7 +59,7 @@ Email de recuperación
 - Backend: Node.js, Express, MongoDB + Mongoose
 - Autenticación: JWT
 - Seguridad: Google reCAPTCHA v2, bcrypt, CORS
-- Email: Brevo (ex Sendinblue)
+- Email: Gmail + Nodemailer (OAuth2) (Antes Brevo pero se descartó)
 - Testing: Jest y Supertest
 - Despliegue: Vercel (frontend), Railway (backend), MongoDB Atlas
 
@@ -86,12 +86,32 @@ Email de recuperación
 
 4. Configurar variables de entorno en \`backend/.env\`:
    \`\`\`env
-   MONGODB_URI=tu_mongodb_uri
-   JWT_SECRET=tu_clave_segura
-   RECAPTCHA_SECRET_KEY=tu_clave_secreta_recaptcha
-   BREVO_API_KEY=tu_api_key_brevo
-   FRONTEND_URL=https://tu-frontend.vercel.app
-   \`\`\`
+
+# Base de datos
+
+MONGODB_URI=tu_mongodb_uri
+PORT=5000
+
+# Autenticación
+
+JWT_SECRET=tu_clave_segura
+
+# Google reCAPTCHA
+
+RECAPTCHA_SECRET_KEY=tu_clave_secreta_recaptcha
+
+# Configuración de Gmail para envío de correos
+
+GMAIL_USER=tu_correo@gmail.com
+GMAIL_APP_PASSWORD=tu_contraseña_de_aplicación
+EMAIL_FROM="TaskApp <tu_correo@gmail.com>"
+
+# Configuración frontend/backend
+
+FRONTEND_URL=http://localhost:5173
+VITE_API_URL=http://localhost:5000/api
+APP_BASE_URL=http://localhost:5000
+\`\`\`
 
 5. Configurar variables de entorno en \`frontend/.env\`:
    \`\`\`env
@@ -159,6 +179,7 @@ node scripts/sendReminders.js # Ejecutar recordatorio manual de tareas
 - Modal de confirmación elegante y accesible para acciones destructivas
 - Etiquetado visual de tareas importantes con borde destacado y prioridad en orden
 - Experiencia de usuario optimizada para móviles y escritorio
+- Flujo de verificación de correo seguro con feedback claro
 
 ---
 

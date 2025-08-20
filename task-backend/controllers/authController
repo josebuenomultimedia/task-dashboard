@@ -3,7 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Task = require("../models/Task");
 const crypto = require("crypto");
-const { sendResetEmail } = require("../utils/sendEmail");
+const { sendResetEmail, sendVerificationEmail } = require("../utils/sendEmail");
+const VerificationToken = require("../models/VerificationToken");
 
 exports.register = async (req, res) => {
   try {
@@ -38,34 +39,155 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
+    const { email, password, recaptchaToken, name } = req.body;
     if (!email || !password) {
       return res
         .status(400)
         .json({ error: "Email y contraseña son requeridos." });
     }
 
+    const exists = await User.findOne({ email });
+    if (exists) {
+      if (!exists.emailVerified) {
+        // Usuario ya creado pero no verificado: ofrecer reenviar verificación
+        return res.status(409).json({
+          error:
+            "Este correo ya está registrado pero no verificado. Reenvía el correo de verificación.",
+          code: "UNVERIFIED",
+        });
+      }
+      return res
+        .status(400)
+        .json({ error: "Ya existe una cuenta con ese correo." });
+    }
+    const hashed = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      email,
+      password: hashed,
+      emailVerified: false,
+    });
+
+    const raw = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(raw).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    await VerificationToken.create({ userId: user._id, tokenHash, expiresAt });
+
+    const base =
+      process.env.APP_BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const verifyUrl = `${base}/api/auth/verify-email?token=${raw}`;
+    // Envío con rollback si falla
+    try {
+      await sendVerificationEmail(user.email, verifyUrl);
+    } catch (e) {
+      console.error(
+        "⚠️  No se pudo enviar el correo de verificación:",
+        e.message
+      );
+      await VerificationToken.deleteMany({ userId: user._id }).catch(() => {});
+      await User.findByIdAndDelete(user._id).catch(() => {});
+      return res.status(502).json({
+        error:
+          "No se pudo enviar el correo de verificación. Intenta nuevamente en unos minutos.",
+      });
+    }
+    const payload = {
+      message: "Usuario creado. Revisa tu correo para confirmar tu email.",
+    };
+    if (process.env.NODE_ENV !== "production") payload.devVerifyUrl = verifyUrl;
+    return res.status(201).json(payload);
+  } catch (err) {
+    console.error("register error:", err);
+    return res.status(500).json({ error: "Error al registrar usuario." });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res
+        .status(400)
+        .json({ error: "Email y contraseña son requeridos." });
     const user = await User.findOne({ email });
-    if (!user) {
+    if (!user)
       return res.status(400).json({ error: "Credenciales inválidas." });
-    }
-
+    if (!user.emailVerified)
+      return res
+        .status(403)
+        .json({ error: "Debes verificar tu correo antes de iniciar sesión." });
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(400).json({ error: "Credenciales inválidas." });
-    }
-
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-
-    res.json({ token });
+    return res.json({ token });
   } catch (err) {
     console.error("❌ Error en login:", err);
-    res.status(500).json({ error: "Error al iniciar sesión." });
+    return res.status(500).json({ error: "Error al iniciar sesión." });
+  }
+};
+
+exports.verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.query;
+    if (!token) return res.status(400).send("Missing token");
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const record = await VerificationToken.findOne({ tokenHash });
+    const errorRedirect = (msg) => {
+      console.warn("verifyEmail:", msg);
+      const url = process.env.FRONTEND_URL
+        ? `${process.env.FRONTEND_URL}/verify/error`
+        : "/verify/error";
+      return res.redirect(302, url);
+    };
+    if (!record) return errorRedirect("no record / invalid token");
+    if (record.usedAt) return errorRedirect("token already used");
+    if (record.expiresAt < new Date()) return errorRedirect("token expired");
+    await User.findByIdAndUpdate(record.userId, { emailVerified: true });
+    record.usedAt = new Date();
+    await record.save();
+    const redirect = process.env.FRONTEND_URL
+      ? `${process.env.FRONTEND_URL}/verify/success`
+      : "/";
+    return res.redirect(302, redirect);
+  } catch (err) {
+    console.error("❌ verifyEmail error:", err);
+    const url = process.env.FRONTEND_URL
+      ? `${process.env.FRONTEND_URL}/verify/error`
+      : "/verify/error";
+    return res.redirect(302, url);
+  }
+};
+
+exports.resendVerification = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ error: "Email requerido" });
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.json({
+        message: "Si el correo existe, se envió un nuevo enlace.",
+      });
+    if (user.emailVerified)
+      return res.json({ message: "El correo ya está verificado." });
+    await VerificationToken.deleteMany({ userId: user._id });
+    const raw = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(raw).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    await VerificationToken.create({ userId: user._id, tokenHash, expiresAt });
+    const base =
+      process.env.APP_BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const verifyUrl = `${base}/api/auth/verify-email?token=${raw}`;
+    await sendVerificationEmail(user.email, verifyUrl);
+    return res.json({
+      message: "Si el correo existe, se envió un nuevo enlace.",
+    });
+  } catch (err) {
+    console.error("❌ resendVerification error:", err);
+    return res.status(500).json({ error: "Error al reenviar verificación." });
   }
 };
 
